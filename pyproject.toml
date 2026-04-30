@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "369"
+version = "0.1.0"
+description = "Stigmergic multi-agent OS for regenerative living"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.12"
+authors = [
+    {name = "Prince Victor Orjiugo"},
+]
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.10.0",
+    "redis>=5.2.0",
+    "asyncpg>=0.30.0",
+    "paho-mqtt>=2.1.0",
+    "httpx>=0.28.0",
+    "anthropic>=0.40.0",
+    "pyyaml>=6.0.2",
+    "python-dotenv>=1.0.1",
+    "websockets>=14.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.8.0",
+]
+gpio = [
+    "RPi.GPIO>=0.7.1",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100

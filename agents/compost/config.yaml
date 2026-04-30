@@ -1,0 +1,17 @@
+agent:
+  type: compost
+  domain: compost
+  description: "Monitors compost maturity and recommends actions"
+
+thresholds:
+  temperature:
+    too_hot: 65
+    thermophilic_min: 40
+    mesophilic_min: 25
+    cold: 15
+  moisture:
+    min: 40
+    max: 65
+    optimal: 55
+
+turning_interval_days: 7

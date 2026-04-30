@@ -1,0 +1,19 @@
+agent:
+  type: awareness
+  domain: system
+  description: "Cross-system reasoning agent — READ ONLY"
+
+analysis:
+  model: "claude-sonnet-4-20250514"
+  max_tokens: 500
+  # Falls back to heuristic analysis if no API key configured
+
+observe_domains:
+  - soil
+  - water
+  - compost
+  - weather
+  - energy
+  - livestock
+
+read_only: true

@@ -1,0 +1,115 @@
+# 369 Configuration — Village Scale
+# Scale: Large, 12+ zones, 15+ agents
+
+system:
+  name: "Greenfield Village"
+  scale: village
+  location:
+    lat: 34.0522
+    lon: -118.2437
+    timezone: America/Los_Angeles
+
+zones:
+  - id: north-field
+    name: North Field
+    type: growing
+    area_sqft: 5000
+  - id: south-field
+    name: South Field
+    type: growing
+    area_sqft: 5000
+  - id: orchard
+    name: Fruit Orchard
+    type: orchard
+    area_sqft: 3000
+  - id: greenhouse-1
+    name: Greenhouse Alpha
+    type: controlled
+    area_sqft: 800
+  - id: greenhouse-2
+    name: Greenhouse Beta
+    type: controlled
+    area_sqft: 800
+  - id: compost-north
+    name: North Compost
+    type: compost
+  - id: compost-south
+    name: South Compost
+    type: compost
+  - id: livestock-pasture
+    name: Livestock Pasture
+    type: pasture
+    area_sqft: 10000
+  - id: water-reservoir
+    name: Water Reservoir
+    type: water
+  - id: solar-array
+    name: Solar Array
+    type: energy
+  - id: community-garden
+    name: Community Plot
+    type: growing
+    area_sqft: 2000
+  - id: nursery
+    name: Seedling Nursery
+    type: controlled
+    area_sqft: 400
+
+agents:
+  - id: soil-north
+    type: soil
+    enabled: true
+    cycle_seconds: 300
+    zones: [north-field, community-garden]
+  - id: soil-south
+    type: soil
+    enabled: true
+    cycle_seconds: 300
+    zones: [south-field]
+  - id: soil-greenhouse
+    type: soil
+    enabled: true
+    cycle_seconds: 180
+    zones: [greenhouse-1, greenhouse-2, nursery]
+  - id: irrigation-fields
+    type: irrigation
+    enabled: true
+    cycle_seconds: 600
+    zones: [north-field, south-field, community-garden]
+  - id: irrigation-greenhouse
+    type: irrigation
+    enabled: true
+    cycle_seconds: 300
+    zones: [greenhouse-1, greenhouse-2, nursery]
+  - id: irrigation-orchard
+    type: irrigation
+    enabled: true
+    cycle_seconds: 900
+    zones: [orchard]
+  - id: compost-north-agent
+    type: compost
+    enabled: true
+    cycle_seconds: 900
+    zones: [compost-north]
+  - id: compost-south-agent
+    type: compost
+    enabled: true
+    cycle_seconds: 900
+    zones: [compost-south]
+  - id: weather-agent
+    type: weather
+    enabled: true
+    cycle_seconds: 1800
+  - id: awareness-agent
+    type: awareness
+    enabled: true
+    cycle_seconds: 1800
+
+hardware:
+  adapters:
+    mqtt:
+      broker: ${MQTT_BROKER}
+      port: ${MQTT_PORT}
+    mock:
+      enabled: true
+      seed: 42

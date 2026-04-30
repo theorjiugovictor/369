@@ -1,0 +1,27 @@
+# Soil Agent Configuration
+agent:
+  type: soil
+  domain: soil
+  description: "Monitors soil health across zones"
+
+thresholds:
+  moisture:
+    critical_low: 20
+    low: 30
+    optimal_low: 40
+    optimal_high: 60
+    high: 75
+  temperature:
+    too_cold: 5
+    cold: 10
+    optimal_low: 15
+    optimal_high: 27
+    hot: 35
+  ph:
+    min: 6.0
+    max: 7.5
+
+metrics:
+  - soil.moisture
+  - soil.temperature
+  - soil.ph

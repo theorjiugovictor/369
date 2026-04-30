@@ -1,0 +1,113 @@
+# 369 Configuration — Marcus's Backyard
+# Scale: Small residential, 4 zones, 5 agents
+
+system:
+  name: "Marcus's Backyard"
+  scale: backyard
+  location:
+    lat: 37.7749
+    lon: -122.4194
+    timezone: America/Los_Angeles
+
+zones:
+  - id: raised-beds
+    name: Raised Beds
+    type: growing
+    area_sqft: 120
+    sensors:
+      - id: soil-moisture-rb-1
+        type: soil_moisture
+        adapter: mqtt
+        topic: "369/sensors/raised-beds/moisture"
+      - id: soil-temp-rb-1
+        type: soil_temperature
+        adapter: mqtt
+        topic: "369/sensors/raised-beds/temp"
+
+  - id: fruit-trees
+    name: Fruit Trees
+    type: orchard
+    area_sqft: 400
+    sensors:
+      - id: soil-moisture-ft-1
+        type: soil_moisture
+        adapter: mqtt
+        topic: "369/sensors/fruit-trees/moisture"
+
+  - id: compost-area
+    name: Compost Station
+    type: compost
+    sensors:
+      - id: compost-temp-1
+        type: temperature
+        adapter: mqtt
+        topic: "369/sensors/compost/temp"
+      - id: compost-moisture-1
+        type: moisture
+        adapter: mqtt
+        topic: "369/sensors/compost/moisture"
+
+  - id: lawn
+    name: Front Lawn
+    type: lawn
+    area_sqft: 600
+    sensors:
+      - id: soil-moisture-lawn-1
+        type: soil_moisture
+        adapter: mqtt
+        topic: "369/sensors/lawn/moisture"
+
+agents:
+  - id: soil-agent
+    type: soil
+    enabled: true
+    cycle_seconds: 300
+    zones: [raised-beds, fruit-trees, lawn]
+
+  - id: irrigation-agent
+    type: irrigation
+    enabled: true
+    cycle_seconds: 600
+    zones: [raised-beds, fruit-trees, lawn]
+
+  - id: compost-agent
+    type: compost
+    enabled: true
+    cycle_seconds: 900
+    zones: [compost-area]
+
+  - id: weather-agent
+    type: weather
+    enabled: true
+    cycle_seconds: 1800
+
+  - id: awareness-agent
+    type: awareness
+    enabled: true
+    cycle_seconds: 3600
+
+hardware:
+  adapters:
+    mqtt:
+      broker: ${MQTT_BROKER}
+      port: ${MQTT_PORT}
+    mock:
+      enabled: true
+      seed: 42
+
+actuators:
+  - id: valve-rb-1
+    type: solenoid_valve
+    adapter: mqtt
+    topic: "369/actuators/raised-beds/valve"
+    zone: raised-beds
+  - id: valve-ft-1
+    type: solenoid_valve
+    adapter: mqtt
+    topic: "369/actuators/fruit-trees/valve"
+    zone: fruit-trees
+  - id: valve-lawn-1
+    type: solenoid_valve
+    adapter: mqtt
+    topic: "369/actuators/lawn/valve"
+    zone: lawn

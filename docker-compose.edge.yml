@@ -1,0 +1,53 @@
+# Lightweight compose for Raspberry Pi / edge devices
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "369"
+      POSTGRES_PASSWORD: "369"
+      POSTGRES_DB: three_six_nine
+      POSTGRES_SHARED_BUFFERS: 128MB
+      POSTGRES_WORK_MEM: 4MB
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build: .
+    ports:
+      - "8369:8000"
+    environment:
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://369:369@postgres:5432/three_six_nine
+      MQTT_BROKER: mqtt
+      MQTT_PORT: "1883"
+    depends_on:
+      - mqtt
+      - redis
+      - postgres
+    restart: unless-stopped
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --workers 1
+
+volumes:
+  mosquitto_data:
+  redis_data:
+  pg_data:

@@ -1,0 +1,16 @@
+agent:
+  type: weather
+  domain: weather
+  description: "Fetches weather forecasts from Open-Meteo API"
+
+api:
+  provider: open-meteo
+  url: "https://api.open-meteo.com/v1/forecast"
+  # No API key needed — Open-Meteo is free
+
+alerts:
+  frost_threshold_c: 2.0
+  heavy_rain_mm: 20.0
+  extreme_heat_c: 38.0
+
+forecast_days: 3

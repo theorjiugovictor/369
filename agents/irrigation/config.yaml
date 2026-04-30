@@ -1,0 +1,18 @@
+agent:
+  type: irrigation
+  domain: water
+  description: "Smart irrigation based on soil moisture and weather"
+
+thresholds:
+  moisture_min: 30.0
+  moisture_target: 50.0
+  rain_skip_mm: 5.0
+
+watering_windows:
+  - start: "05:00"
+    end: "08:00"
+  - start: "19:00"
+    end: "22:00"
+
+valve_prefix: "valve-"
+max_duration_minutes: 30

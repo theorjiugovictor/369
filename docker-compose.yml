@@ -1,0 +1,61 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "369"
+      POSTGRES_PASSWORD: "369"
+      POSTGRES_DB: three_six_nine
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build: .
+    ports:
+      - "8369:8000"
+    environment:
+      REDIS_URL: redis://redis:6379
+      DATABASE_URL: postgresql://369:369@postgres:5432/three_six_nine
+      MQTT_BROKER: mqtt
+      MQTT_PORT: "1883"
+    depends_on:
+      - mqtt
+      - redis
+      - postgres
+    restart: unless-stopped
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+  dashboard:
+    image: nginx:alpine
+    ports:
+      - "3369:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
+  redis_data:
+  pg_data:

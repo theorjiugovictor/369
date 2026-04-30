@@ -1,0 +1,68 @@
+# 369 Configuration — Community Garden
+# Scale: Medium, 6 zones, 8 agents
+
+system:
+  name: "Riverside Community Garden"
+  scale: small-garden
+  location:
+    lat: 40.7128
+    lon: -74.0060
+    timezone: America/New_York
+
+zones:
+  - id: plot-a
+    name: Plot A — Vegetables
+    type: growing
+    area_sqft: 200
+  - id: plot-b
+    name: Plot B — Herbs
+    type: growing
+    area_sqft: 100
+  - id: plot-c
+    name: Plot C — Root Vegetables
+    type: growing
+    area_sqft: 200
+  - id: greenhouse
+    name: Greenhouse
+    type: controlled
+    area_sqft: 150
+  - id: compost-station
+    name: Compost Station
+    type: compost
+  - id: water-collection
+    name: Rainwater Collection
+    type: water
+
+agents:
+  - id: soil-agent
+    type: soil
+    enabled: true
+    cycle_seconds: 300
+    zones: [plot-a, plot-b, plot-c, greenhouse]
+  - id: irrigation-agent
+    type: irrigation
+    enabled: true
+    cycle_seconds: 600
+    zones: [plot-a, plot-b, plot-c, greenhouse]
+  - id: compost-agent
+    type: compost
+    enabled: true
+    cycle_seconds: 900
+    zones: [compost-station]
+  - id: weather-agent
+    type: weather
+    enabled: true
+    cycle_seconds: 1800
+  - id: awareness-agent
+    type: awareness
+    enabled: true
+    cycle_seconds: 3600
+
+hardware:
+  adapters:
+    mqtt:
+      broker: ${MQTT_BROKER}
+      port: ${MQTT_PORT}
+    mock:
+      enabled: true
+      seed: 42
