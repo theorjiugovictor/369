@@ -44,5 +44,8 @@ htmlcov/
 *.sqlite3
 data/
 logs/
-.venv/
-.pytest_cache/
+
+# Dashboard
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.env.local
